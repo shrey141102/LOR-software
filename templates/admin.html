@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Panel - Documents</h1>
+
+    <table id="documents-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Registration Number</th>
+                <th>Name</th>
+                <th>Filename</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Document rows will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+    async function fetchDocuments() {
+        try {
+            const response = await fetch('/documents');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch documents: ${response.statusText}`);
+            }
+            const documents = await response.json();
+
+            const tableBody = document.querySelector('#documents-table tbody');
+            tableBody.innerHTML = '';
+
+            documents.forEach(document => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${document.id}</td>
+                    <td>${document.regno}</td>
+                    <td>${document.name}</td>
+                    <td>${document.filename}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching documents:', error);
+        }
+    }
+
+    // Call fetchDocuments when the page loads
+    fetchDocuments();
+</script>
+
+
+</body>
+</html>
