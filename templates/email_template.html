@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Document Uploaded</title>
+</head>
+<body>
+    <p>Dear {{ faculty_name }},</p>
+    <p>A new document has been uploaded.</p>
+    <p><strong>Student Name:</strong> {{ student_name }}</p>
+    <p><strong>Registration Number:</strong> {{ regno }}</p>
+    <p>Please click the link below to verify the contents of this document:</p>
+    <p>
+        <a href="{{ confirmation_link }}">Acknowledge Receipt</a>
+    </p>
+    <p>Best regards,</p>
+    <p>Your Team</p>
+</body>
+</html>

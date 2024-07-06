@@ -23,51 +23,37 @@
 <body>
     <h1>Admin Panel - Documents</h1>
 
-    <table id="documents-table">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Registration Number</th>
                 <th>Name</th>
                 <th>Filename</th>
+                <th>Faculty 1</th>
+                <th>Faculty 1 Approval</th>
+                <th>Faculty 2</th>
+                <th>Faculty 2 Approval</th>
+                <th>Faculty 3</th>
+                <th>Faculty 3 Approval</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Document rows will be inserted here -->
+            {% for document in documents %}
+            <tr>
+                <td>{{ document.id }}</td>
+                <td>{{ document.regno }}</td>
+                <td>{{ document.name }}</td>
+                <td>{{ document.filename }}</td>
+                <td>{{ document.faculty1 }}</td>
+                <td>{{ 'Approved' if document.faculty1_ack else 'Pending' }}</td>
+                <td>{{ document.faculty2 if document.faculty2 else 'N/A' }}</td>
+                <td>{{ 'Approved' if document.faculty2 and document.faculty2_ack else 'Pending' if document.faculty2 else 'N/A' }}</td>
+                <td>{{ document.faculty3 if document.faculty3 else 'N/A' }}</td>
+                <td>{{ 'Approved' if document.faculty3 and document.faculty3_ack else 'Pending' if document.faculty3 else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
-
-    <script>
-    async function fetchDocuments() {
-        try {
-            const response = await fetch('/documents');
-            if (!response.ok) {
-                throw new Error(`Failed to fetch documents: ${response.statusText}`);
-            }
-            const documents = await response.json();
-
-            const tableBody = document.querySelector('#documents-table tbody');
-            tableBody.innerHTML = '';
-
-            documents.forEach(document => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${document.id}</td>
-                    <td>${document.regno}</td>
-                    <td>${document.name}</td>
-                    <td>${document.filename}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        } catch (error) {
-            console.error('Error fetching documents:', error);
-        }
-    }
-
-    // Call fetchDocuments when the page loads
-    fetchDocuments();
-</script>
-
-
 </body>
 </html>
