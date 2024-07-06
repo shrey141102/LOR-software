@@ -1,18 +1,34 @@
-# LoR Automation System (In progress)
+# LoR Automation System 
 
-## Features
+## Endpoints Overview
 
-- **Document Upload**: Users can upload PDF documents along with student details such as name and registration number.
-- **Database Storage**: Documents are stored in a SQLite database (`students.db`) with attributes including document ID, registration number, student name, and filename.
-- **Admin Panel**: An admin interface (`/admin`) allows administrators to view all uploaded documents, including options for deletion.
-- **Responsive Design**: The web interface is designed to be user-friendly and responsive across different devices.
+- **`/`**: Homepage for uploading student documents.
+  - **Method**: GET
+  - **Description**: Renders a form to upload student documents including name, registration number, and PDF file.
+  
+- **`/uploads`**: Endpoint for handling document uploads.
+  - **Method**: POST
+  - **Description**: Accepts form data (student details and PDF file) and saves them to the database (`students.db`). Emails the uploaded document to selected faculty members.
+  
+- **`/documents`**: Endpoint to retrieve all uploaded documents.
+  - **Method**: GET
+  - **Description**: Returns a JSON list of all documents stored in the database (`students.db`).
 
-## Technologies Used
+- **`/delete_all_documents`**: Endpoint to delete all documents from the database.
+  - **Method**: DELETE
+  - **Description**: Deletes all documents stored in the database (`students.db`).
 
-- **Flask**: Python web framework used for backend development.
-- **SQLAlchemy**: Object-relational mapping (ORM) library for Python, used with Flask to interact with the SQLite database.
-- **HTML/CSS**: Frontend components for user interaction and admin panel layout.
-- **JavaScript (AJAX)**: Used for asynchronous data fetching to dynamically update the admin panel.
+- **`/admin`**: Admin panel to view uploaded documents and manage the system.
+  - **Method**: GET
+  - **Description**: Renders an admin interface to view, search, and delete uploaded documents.
+
+- **`/add_faculty`**: Endpoint to add new faculty members.
+  - **Methods**: GET, POST
+  - **Description**: GET renders a form to add a new faculty member. POST handles form submission to add the faculty member to the database.
+
+- **`/list_faculty`**: Endpoint to list all existing faculty members.
+  - **Method**: GET
+  - **Description**: Renders a list of all faculty members stored in the database.
 
 ## Setup Instructions
 
@@ -46,11 +62,6 @@
 6. **Access the Application**:
    Open a web browser and navigate to `http://localhost:5000` to access the application.
 
-## Usage
-
-- **Uploading Documents**: Navigate to the homepage (`/`) to upload documents. Enter student details (name, registration number) and select a PDF file to upload.
-- **Admin Panel**: Visit the admin panel (`/admin`) to view all uploaded documents. Administrators can delete documents from this interface.
-
 ## File Structure
 
 - `app.py`: Main Flask application file containing routes and database configurations.
@@ -61,3 +72,7 @@
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+This README now provides a concise overview of the endpoints available in your LoR Automation System project, along with setup instructions and other relevant details. Adjust as necessary based on your specific project requirements and additional features.
