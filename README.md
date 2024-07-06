@@ -49,17 +49,24 @@
    pip install -r requirements.txt
    ```
 
-4. **Initialize the Database**:
+4. **Create a `.env` File**:
+   Create a `.env` file in the root directory with the following environment variables:
+   ```plaintext
+   MAIL_USERNAME=<your-email>
+   MAIL_PASSWORD=<your-email-password>
+   ```
+
+5. **Initialize the Database**:
    ```bash
    python app.py
    ```
 
-5. **Run the Application**:
+6. **Run the Application**:
    ```bash
    flask run
    ```
 
-6. **Access the Application**:
+7. **Access the Application**:
    Open a web browser and navigate to `http://localhost:5000` to access the application.
 
 ## File Structure
@@ -68,11 +75,3 @@
 - `templates/`: Directory containing HTML templates for rendering web pages.
 - `static/`: Directory for storing static files such as CSS stylesheets and client-side scripts.
 - `students.db`: SQLite database file storing uploaded document information.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-This README now provides a concise overview of the endpoints available in your LoR Automation System project, along with setup instructions and other relevant details. Adjust as necessary based on your specific project requirements and additional features.
