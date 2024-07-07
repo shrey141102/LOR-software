@@ -45,12 +45,12 @@
                 <td>{{ document.regno }}</td>
                 <td>{{ document.name }}</td>
                 <td>{{ document.filename }}</td>
-                <td>{{ document.faculty1 }}</td>
+                <td>{{ document.faculty1_name if document.faculty1_name else 'N/A' }}</td>
                 <td>{{ 'Approved' if document.faculty1_ack else 'Pending' }}</td>
-                <td>{{ document.faculty2 if document.faculty2 else 'N/A' }}</td>
-                <td>{{ 'Approved' if document.faculty2 and document.faculty2_ack else 'Pending' if document.faculty2 else 'N/A' }}</td>
-                <td>{{ document.faculty3 if document.faculty3 else 'N/A' }}</td>
-                <td>{{ 'Approved' if document.faculty3 and document.faculty3_ack else 'Pending' if document.faculty3 else 'N/A' }}</td>
+                <td>{{ document.faculty2_name if document.faculty2_name else 'N/A' }}</td>
+                <td>{{ 'Approved' if document.faculty2_name and document.faculty2_ack else 'Pending' if document.faculty2_name else 'N/A' }}</td>
+                <td>{{ document.faculty3_name if document.faculty3_name else 'N/A' }}</td>
+                <td>{{ 'Approved' if document.faculty3_name and document.faculty3_ack else 'Pending' if document.faculty3_name else 'N/A' }}</td>
             </tr>
             {% endfor %}
         </tbody>

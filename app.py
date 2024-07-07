@@ -42,10 +42,11 @@ def upload():
             faculty2=faculty_ids[1] if len(faculty_ids) > 1 and faculty_ids[1] else None,
             faculty3=faculty_ids[2] if len(faculty_ids) > 2 and faculty_ids[2] else None
         )
+        faculties = Faculty.query.filter(Faculty.id.in_(faculty_ids)).all()
+
         db.session.add(new_document)
         db.session.commit()
 
-        faculties = Faculty.query.filter(Faculty.id.in_(faculty_ids)).all()
         send_email(faculties, filepath, new_document)
 
         return redirect(url_for('index'))
@@ -73,10 +74,13 @@ def delete_all_documents():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/admin', methods=['GET'])
 def admin_panel():
     documents = Document.query.all()
-    return render_template('admin.html', documents=documents)
+    documents_with_faculty = [doc.get_faculty_details() for doc in documents]
+    return render_template('admin.html', documents=documents_with_faculty)
+
 
 @app.route('/add_faculty', methods=['GET', 'POST'])
 def add_faculty():
