@@ -4,21 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Faculty</title>
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 5vh 20vh;
+            border-radius: 1vh;
+            box-shadow: 0 0 1vh rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 2vh;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        label {
+            margin-bottom: 1vh;
+            text-align: left;
+        }
+        input[type="text"], input[type="email"] {
+            padding: 1vh;
+            margin-bottom: 2vh;
+            border: 0.1vh solid #ccc;
+            border-radius: 0.5vh;
+        }
+        input[type="submit"], .list-button {
+            padding: 1vh 2vh;
+            border: none;
+            border-radius: 0.5vh;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            font-size: 1.6vh;
+            margin-top: 1vh;
+        }
+        input[type="submit"]:hover, .list-button:hover {
+            background-color: #0056b3;
+        }
+        .list-button {
+            background-color: #6c757d;
+            text-decoration: none;
+            color: white;
+            display: inline-block;
+        }
+        .error {
+            border: 0.2vh solid red;
+        }
+    </style>
 </head>
 <body>
-    <h1>Add Faculty</h1>
-    <form action="/add_faculty" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
+    <div class="container">
+        <h1>Add Faculty</h1>
+        <form action="/add_faculty" method="post">
+            <label for="id">Employee ID:</label>
+            <input type="text" id="id" name="id" pattern="\d{5}" title="Employee ID must be exactly 5 digits" required><br><br>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required><br>
 
-        <label for="school">School:</label>
-        <input type="text" id="school" name="school" required><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" pattern="[a-zA-Z0-9.]+@vit.ac.in" title="Email must end with @vit.ac.in" required><br><br>
 
 
-        <input type="submit" value="Add Faculty">
-    </form>
+            <label for="school">School:</label>
+            <input type="text" id="school" name="school" required><br>
+
+            <input type="submit" value="Add Faculty">
+
+        </form>
+        <a href="/list_faculty" class="list-button">View Faculty List</a>
+    </div>
+
 </body>
 </html>

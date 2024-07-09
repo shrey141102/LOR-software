@@ -34,7 +34,7 @@ class Document(db.Model):
 
 
 class Faculty(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     school = db.Column(db.String(100), nullable=False)

@@ -1,7 +1,9 @@
+import sqlalchemy.exc
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from models import db, Document, Faculty
 from flask_mail import Mail, Message
 import os
+import uuid
 from instance.config import Config
 
 app = Flask(__name__, instance_relative_config=True)
@@ -47,7 +49,7 @@ def upload():
         db.session.add(new_document)
         db.session.commit()
 
-        send_email(faculties, filepath, new_document)
+        send_email(regno, faculties, filepath, new_document)
 
         return redirect(url_for('index'))
 
@@ -82,17 +84,26 @@ def admin_panel():
     return render_template('admin.html', documents=documents_with_faculty)
 
 
+from flask import flash
+
 @app.route('/add_faculty', methods=['GET', 'POST'])
 def add_faculty():
     if request.method == 'POST':
+        id = request.form['id']
         name = request.form['name']
         email = request.form['email']
         school = request.form['school']
-        new_faculty = Faculty(name=name, email=email, school=school)
-        db.session.add(new_faculty)
-        db.session.commit()
-        return redirect(url_for('list_faculty'))
+        new_faculty = Faculty(id=id, name=name, email=email, school=school)
+        try:
+            db.session.add(new_faculty)
+            db.session.commit()
+            return redirect(url_for('list_faculty'))
+        except Exception as e:
+            db.session.rollback()
+            flash("Error: Faculty ID already exists. Please enter a unique ID.")
+            return redirect(url_for('add_faculty'))
     return render_template('add_faculty.html')
+
 
 @app.route('/delete_all_faculty', methods=['GET'])
 def delete_all_faculty():
@@ -109,25 +120,33 @@ def list_faculty():
     faculties = Faculty.query.all()
     return render_template('list_faculty.html', faculties=faculties)
 
-@app.route('/acknowledge/<int:document_id>/<int:faculty_idx>', methods=['GET'])
-def acknowledge_receipt(document_id, faculty_idx):
-    document = Document.query.get_or_404(document_id)
-    if faculty_idx == 1:
+@app.route('/acknowledge_receipt/<string:student_id>/<int:faculty_id>/<int:document_id>', methods=['GET'])
+def acknowledge_receipt(student_id, document_id, faculty_id):
+    faculty_id = (str)(faculty_id)
+    document = Document.query.filter_by(id=document_id).first_or_404()
+    if document.regno != student_id:
+        return jsonify({'error': 'Registration number does not match'}), 400
+    print(type(document.faculty1))
+    if faculty_id == document.faculty1:
         document.faculty1_ack = True
-    elif faculty_idx == 2:
+    elif faculty_id == document.faculty2:
         document.faculty2_ack = True
-    elif faculty_idx == 3:
+    elif faculty_id == document.faculty3:
         document.faculty3_ack = True
+    else:
+        return jsonify({'error': 'Invalid faculty_id'}), 400  # Return an error if faculty_id is not recognized
+
     db.session.commit()
+
     return jsonify({'success': True})
 
 
-def send_email(faculties, filepath, document):
+def send_email(regno, faculties, filepath, document):
     for idx, faculty in enumerate(faculties):
         with app.open_resource(filepath) as fp:
-            confirmation_link = url_for('acknowledge_receipt', document_id=document.id, faculty_idx=idx+1, _external=True)
+            confirmation_link = url_for('acknowledge_receipt', student_id=regno, faculty_id=faculty.id, document_id=document.id, _external=True)
             msg = Message(
-                subject="New Document Uploaded",
+                subject="TEST EMAIL FOR LOR SOFTWARE",
                 recipients=[faculty.email],
                 body=f"Dear {faculty.name},\n\nA new document has been uploaded.\n\nBest regards,\nYour Team"
             )
