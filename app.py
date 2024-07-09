@@ -138,7 +138,8 @@ def acknowledge_receipt(student_id, document_id, faculty_id):
 
     db.session.commit()
 
-    return jsonify({'success': True})
+    # return jsonify({'success': True})
+    return render_template('approval_page.html')
 
 
 def send_email(regno, faculties, filepath, document):
